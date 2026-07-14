@@ -126,7 +126,25 @@ file.files[0],
 "jpn"
 );
 
-result.innerText=text;
+const lines = text.split("\n");
+
+const names = [];
+
+for (let line of lines) {
+  line = line.replace(/[0-9A-Za-z\/\[\]\(\)\.\,\:\-\|]/g, "");
+  line = line.replace(/\s+/g, "");
+
+  // 2～5文字の漢字だけを候補にする
+  if (/^[一-龥]{2,5}$/.test(line)) {
+    names.push(line);
+  }
+}
+
+// 重複を削除
+const uniqueNames = [...new Set(names)];
+
+// 最初の6人だけ表示
+result.innerText = uniqueNames.slice(0, 6).join("\n");
 
 copy.disabled=false;
 
